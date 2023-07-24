@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 mt-5">
+    <form method='post' class="p-4 bg-light rounded" enctype="multipart/form-data">
+        <h2 class="text-center mb-4">Update profile</h2>
+        <div class="avatar-container">
+            <div class="avatar">
+                {% if user.image %}
+                <img
+                src="{{ url_for('static', filename=user.image) }}?timestamp={{ current_time }}"
+                    alt="ImagePost"
+                    id="avatar-img"
+                />
+                {% else %}
+                <img
+                    src="{{ url_for('static', filename='media/avatars/default_avatar.png') }}"
+                    alt="Default Avatar"
+                    id="avatar-img"
+                />
+                {% endif %}
+                <div class="avatar-overlay" id="avatar-overlay">
+                    <span>Change Avatar</span>
+                </div>
+            </div>
+            <input type="file" name="avatar" id="avatar-input" />
+        </div>
+        <div class="form-group">
+            <label for='full_name'>Full Name</label>
+            <input class="form-control form-control-lg" type='text' name='full_name' value='{{ user.full_name }}'></input>
+        </div>
+        <div class="form-group">
+            <label for='age'>Age</label>
+            <input class="form-control form-control-lg" type='text' name='age' value='{{ user.age }}'></input>
+        </div>
+        <div class="form-group">
+            <label for='email'>Email</label>
+            <input class="form-control form-control-lg" type='text' name='email' value='{{ user.email }}'></input>
+        </div>
+        <div>
+            <button class="btn btn-success btn-block btn-lg my-4" type='submit'>Update</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

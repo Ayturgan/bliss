@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+        <h4 class="m-4">Are you sure you want to delete post {{ post.id }}?</h4>
+        <form method="post">
+            <button type="submit" class="btn btn-danger btn-lg my-4">
+                Delete
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

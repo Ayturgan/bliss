@@ -1,0 +1,106 @@
+{% extends 'base.html' %} {% block content %}
+<body>
+    <div class="d-flex justify-content-center align-items-center vh-100 mt-5">
+        <form
+            action=""
+            method="post"
+            class="p-4 bg-light rounded"
+            enctype="multipart/form-data"
+        >
+            <h2 class="text-center mb-4">Registration Form</h2>
+            {% with messages = get_flashed_messages() %} {% if messages and
+            'email' in messages[0] %}
+            <div class="notification is-danger mb-4">
+                {{ messages[0] }}. Go to
+                <a href="{{ url_for('login') }}">login page</a>.
+            </div>
+            {% endif %} {% endwith %}
+            <div class="avatar-container">
+                <div class="avatar">
+                    <img
+                        src="{{ url_for('static', filename='media/avatars/default_avatar.png') }}"
+                        alt="Default Avatar"
+                        id="avatar-img"
+                    />
+                    <div class="avatar-overlay" id="avatar-overlay">
+                        <span>Change Avatar</span>
+                    </div>
+                </div>
+                <input type="file" name="avatar" id="avatar-input" />
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="name">Username</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-lg"
+                            id="exampleInputusername"
+                            name="username"
+                        />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="Secondname">Full Name</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-lg"
+                            id="exampleInputfull_name"
+                            name="full_name"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="Email1">Email address</label>
+                        <input
+                            type="email"
+                            class="form-control form-control-lg"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                            name="email"
+                        />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="Age">Age</label>
+                        <input
+                            type="age"
+                            class="form-control form-control-lg"
+                            id="99"
+                            aria-describedby="emailHelp"
+                            name="age"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Password">Password</label>
+                {% with messages = get_flashed_messages() %} {% if messages and
+                'password' in messages[0] %}
+                <div class="notification is-danger">
+                    <a>{{ messages[0] }}</a>
+                </div>
+                {% endif %} {% endwith %}
+                <input
+                    type="password"
+                    class="form-control form-control-lg"
+                    id="exampleInputPassword"
+                    name="password"
+                />
+            </div>
+            <button
+                type="submit"
+                class="btn btn-success btn-block btn-lg my-4"
+                name="create"
+            >
+                Sign up
+            </button>
+        </form>
+    </div>
+</body>
+{% endblock %}

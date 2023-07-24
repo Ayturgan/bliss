@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row d-inline=block p-3">
+    {% for post in posts %}
+    <div class="col-md-4">
+        <div class="latest">
+            <figure>
+                {% if post.image %}
+                <img
+                    class="post-image"
+                    src="{{ url_for('static', filename=post.image) }}"
+                    alt="ImagePost"
+                    width="150"
+                />
+                {% else %}
+                <img
+                    class="post-image"
+                    src="{{ url_for('static', filename='media/images_post/default_image.jpg') }}"
+                    alt="DefaultImage"
+                    width="150"
+                />
+                {% endif %}
+            </figure>
+            <span>{{post.created_date}}</span>
+            <div class="nostrud">
+                <h3>
+                    <a href="http://127.0.0.1:5000/{{post.id}}"
+                        >{{post.title}}</a
+                    >
+                    <li class="like-of-post">
+                        {% if post.likes_count %} {{ post.likes_count }} {%
+                        endif %}
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                    </li>
+                </h3>
+
+                <p>
+                    <a href="http://127.0.0.1:5000/profile/{{post.author_id}}"
+                        >{{ post.author.username }}</a
+                    >
+                </p>
+                <a class="read_more" href="http://127.0.0.1:5000/{{post.id}}"
+                    >Read More</a
+                >
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{% endblock %}

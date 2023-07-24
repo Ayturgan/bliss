@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    .post-container {
+        display: block;
+        margin: 20px auto; /* Установка отступов по вертикали и автоматический отступ по горизонтали */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 100%; /* Заменено width на max-width */
+        background-color: #ffffff82;
+    }
+
+    .post-title {
+        padding-left: 40px;
+        font-size: 37px;
+        font-weight: bold;
+    }
+
+    .post-date {
+        font-size: 14px;
+        color: #999;
+        float: right;
+        padding-right: 30px;
+    }
+
+    .post-author {
+        padding-left: 10px;
+
+        font-size: 14px;
+        opacity: 0.5;
+    }
+
+    .post-content {
+        font-size: 24px;
+
+        font-family: monospace, sans-serif;
+
+        padding: 20px 30px 20px;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .center-buttons {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="post-container">
+        <div class="post-title">{{ post.title }}</div>
+        <figure class="post-figure-image">
+            {% if post.image %}
+            <img
+                class="post-image-detail"
+                src="{{ url_for('static', filename=post.image) }}"
+                alt="ImagePost"
+                width="150"
+            />
+            {% else %}
+            <img
+                class="post-image-detail"
+                src="{{ url_for('static', filename='media/images_post/default_image.jpg') }}"
+                alt="DefaultImage"
+                width="150"
+            />
+            {% endif %}
+        </figure>
+        <div class="post-date">{{ post.created_date }}</div>
+        <div class="post-author">
+            {{ post.author.full_name }}, {{ post.author.username }}
+        </div>
+        <li class="like-of-post">
+            {% if post.likes_count %}
+            <span>{{ post.likes_count }}</span>
+            {% endif %}
+            <a href="#" class="like-link" data-post-id="{{ post.id }}">
+                {% if post.is_liked %}
+                <i class="fa fa-heart" aria-hidden="true"></i>
+                {% else %}
+                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                {% endif %}
+            </a>
+        </li>
+
+        <p class="post-content">{{ post.content }}</p>
+
+        <div class="center-buttons">
+            <a
+                href="http://127.0.0.1:5000/{{post.id}}/delete/"
+                class="btn btn-danger"
+                >Delete</a
+            >
+            <a
+                href="http://127.0.0.1:5000/{{post.id}}/update/"
+                class="btn btn-primary"
+                >Update</a
+            >
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".like-link").forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const postId = this.getAttribute("data-post-id");
+                    likePost(postId);
+                });
+            });
+
+            function likePost(postId) {
+                fetch(`/like/${postId}/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({}),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Переключаем класс иконки в зависимости от состояния лайка
+                        const likeIcon = document.querySelector(
+                            `[data-post-id="${postId}"] i`
+                        );
+                        if (data.is_liked) {
+                            likeIcon.classList.remove("fa-heart-o");
+                            likeIcon.classList.add("fa-heart");
+                        } else {
+                            likeIcon.classList.remove("fa-heart");
+                            likeIcon.classList.add("fa-heart-o");
+                        }
+
+                        // Обновляем отображение количества лайков
+                        const likeCount = document.querySelector(
+                            `[data-post-id="${postId}"] span`
+                        );
+                        likeCount.textContent = data.likes_count;
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        });
+    </script>
+</body>
+
+{% endblock %}
